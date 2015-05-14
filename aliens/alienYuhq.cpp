@@ -1,6 +1,16 @@
 #include "aliens.h"
 
-Alien::Attack AlienYuhq::fight(int alienId, Alien::Color alienColor, Alien::Species alienSpecies)
+//TODO : Implémenter les comportements prédéfinis de ces aliens
+//tel que décris dans l'énoncé.
+
+using namespace std;
+
+AlienYuhq::AlienYuhq() : Alien(Yuhq)
+{
+
+}
+
+Alien::Attack AlienYuhq::fight(Color alienColor, Species alienSpecies)
 {
     return Forfeit;
 }

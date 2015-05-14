@@ -21,7 +21,7 @@ set(ALIENS_SRCS aliens/alien.cpp
                 aliens/alienOg.cpp 
                 aliens/alienUqomua.cpp 
                 aliens/alienYuhq.cpp 
-                aliens/intelligent_alien.cpp)
+                aliens/alienSmart.cpp)
 
 QT5_WRAP_CPP(MOCS_SERVER src/gui.h server/server.h)
 QT5_ADD_RESOURCES(RCS_SERVER sprites.qrc)

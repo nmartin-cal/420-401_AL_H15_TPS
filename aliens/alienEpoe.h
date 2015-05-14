@@ -6,14 +6,15 @@
 
 class AlienEpoe : public Alien
 {
-	public:
-	    AlienEpoe() : Alien(Epoe) {}
-	    Alien* clone() const { return new AlienEpoe(*this); }
-	    Attack fight(int alienId, Color alienColor, Species alienSpecies);
-	    Move move();
-	    bool eat();
-	    Color color();
-	    Species species();
+public:
+    AlienEpoe();
+    Alien* clone() const { return new AlienEpoe(*this); }
+    Attack fight(Color alienColor, Species alienSpecies);
+    Move move();
+    bool eat();
+    Color color();
+    Species species();
+private:
 };
 
 #endif

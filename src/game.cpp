@@ -537,7 +537,6 @@ bool Game::updateAlien(Alien* alien)
         Alien* nalien = *it;
         pair<int,int> pos = m_map[nalien];
         alien->neighboor(pos.first, pos.second,
-                         nalien->id(),
                          nalien->currentTurnColor(),
                          nalien->currentTurnSpecies(),
                          nalien->sleeping(),
@@ -722,11 +721,9 @@ bool Game::updateAlien(Alien* alien)
                     m_gui.appendDebug(oss.str());
                 }
                 //COMBAT !!
-                Alien::Attack a1 = alien->fight(otherAlien->id(),
-                                                otherAlien->m_currentTurnColor,
+                Alien::Attack a1 = alien->fight(otherAlien->m_currentTurnColor,
                                                 otherAlien->m_currentTurnSpecies);
-                Alien::Attack a2 = otherAlien->fight(alien->id(),
-                                                     alien->m_currentTurnColor,
+                Alien::Attack a2 = otherAlien->fight(alien->m_currentTurnColor,
                                                      alien->m_currentTurnSpecies);
                 if (debug)
                 {

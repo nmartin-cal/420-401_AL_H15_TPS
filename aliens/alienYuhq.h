@@ -7,13 +7,14 @@
 class AlienYuhq : public Alien
 {
 public:
-    AlienYuhq() : Alien(Yuhq) {}
+    AlienYuhq();
     Alien* clone() const { return new AlienYuhq(*this); }
-    Attack fight(int alienId, Color alienColor, Species alienSpecies);
+    Attack fight(Color alienColor, Species alienSpecies);
     Move move();
     bool eat();
     Color color();
     Species species();
+private:
 };
 
 #endif

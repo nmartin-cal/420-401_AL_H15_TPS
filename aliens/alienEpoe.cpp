@@ -1,8 +1,19 @@
 #include "aliens.h"
 
-Alien::Attack AlienEpoe::fight(int alienId, Alien::Color alienColor, Alien::Species alienSpecies)
+//TODO : Implémenter les comportements prédéfinis de ces aliens
+//tel que décris dans l'énoncé.
+
+using namespace std;
+
+AlienEpoe::AlienEpoe() : Alien(Epoe)
 {
-    return Forfeit;
+
+}
+
+
+Alien::Attack AlienEpoe::fight(Color alienColor, Species alienSpecies)
+{
+   return Forfeit;
 }
 
 Alien::Move AlienEpoe::move()

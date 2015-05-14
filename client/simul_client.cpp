@@ -1,10 +1,10 @@
 #include <sstream>
 #include <iostream>
 #include <map>
+#include "client.h"
 #include "clientprotocol.h"
 #include "../src/map.h"
 #include "../aliens/alien.h"
-#include "client.h"
 
 using namespace std;
 

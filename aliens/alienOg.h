@@ -7,13 +7,14 @@
 class AlienOg : public Alien
 {
 public:
-    AlienOg() : Alien(Og) {}
+    AlienOg();
     Alien* clone() const { return new AlienOg(*this); }
-    Attack fight(int alienId, Color alienColor, Species alienSpecies);
+    Attack fight(Color alienColor, Species alienSpecies);
     Move move();
     bool eat();
     Color color();
     Species species();
+private:
 };
 
 #endif

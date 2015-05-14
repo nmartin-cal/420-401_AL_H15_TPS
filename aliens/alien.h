@@ -89,7 +89,7 @@ class Alien
         virtual bool eat() = 0;
 
         //appelé pour savoir comment l'agent veut attaquer un autre agent
-        virtual Attack fight(int alienId, Color alienColor, Species alienSpecies) = 0;
+        virtual Attack fight(Color alienColor, Species alienSpecies) = 0;
 
         //appelé pour savoir la couleur d'un agent
         virtual Color color() = 0;
@@ -101,7 +101,7 @@ class Alien
         virtual void position(int x, int y) {}
 
         //appelé pour chaque voisin que l'agent voit
-        virtual void neighboor(int x, int y, int id, Color color, Species species,
+        virtual void neighboor(int x, int y, Color color, Species species,
                                bool sleeping, bool mating, bool eating) {}
 
         //appelé pour chaque nourriture que l'agent voit
@@ -182,13 +182,13 @@ class RemotelyControledAlien : public Alien
     public:
         RemotelyControledAlien(Server* serveur, int clientId);
         Alien* clone() const;
-        Attack fight(int alienId, Color alienColor, Species alienSpecies);
+        Attack fight(Color alienColor, Species alienSpecies);
         Move move();
         bool eat();
         Color color();
         Species species();
         void position(int x, int y);
-        void neighboor(int x, int y, int id, Color color, Species species,
+        void neighboor(int x, int y, Color color, Species species,
                                bool sleeping, bool mating, bool eating);
         void food(int x, int y);
         void sleep();

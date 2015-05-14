@@ -260,10 +260,10 @@ int RemotelyControledAlien::sendAndReceiveCommand(const std::string& cmd, const 
     return val;
 }
 
-Alien::Attack RemotelyControledAlien::fight(int alienId, Alien::Color alienColor, Alien::Species alienSpecies)
+Alien::Attack RemotelyControledAlien::fight(Alien::Color alienColor, Alien::Species alienSpecies)
 {
     stringstream ss;
-    ss << alienId << " " << alienColor << " " << alienSpecies;
+    ss << alienColor << " " << alienSpecies;
     int a = sendAndReceiveCommand("fight", ss.str());
     if (a < Alien::Plasma || a > Alien::Fungus)
         throw RemotelyControledAlienException("Erreur d'attaque envoyée par le client dans la réponse.");
@@ -317,10 +317,10 @@ void RemotelyControledAlien::position(int x, int y)
     sendCommand("position", ss.str());
 }
 
-void RemotelyControledAlien::neighboor(int x, int y, int id, Alien::Color col, Alien::Species species, bool sleeping, bool mating, bool eating)
+void RemotelyControledAlien::neighboor(int x, int y, Alien::Color col, Alien::Species species, bool sleeping, bool mating, bool eating)
 {
     stringstream ss;
-    ss << x << " " << y << " " << id << " "
+    ss << x << " " << y << " "
        << col << " " << species << " "
        << static_cast<int>(sleeping) << " "
        << static_cast<int>(mating) << " "
