@@ -1,3 +1,4 @@
 # 420-401_AL_H15_TPS
 
-Version non officielle du TP synthese.
+Version officielle du TP synthèse.
+L'énoncé se trouve sur Moodle.
