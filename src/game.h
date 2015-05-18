@@ -30,6 +30,7 @@ private:
     void sendMapInfo(int clientId);
     void sendNumAliens(int clientId);
     void sendAlienId(int clientId, int alienId);
+    void disqualify(Alien* alien);
 
 private:
     Server* m_server;

@@ -119,34 +119,36 @@ void Game::update()
             }
         }
 
-        //Choisit un ordre d'update des aliens
         m_currentAlienPerm = m_map.aliens();
-        random_shuffle(m_currentAlienPerm.begin(), m_currentAlienPerm.end());
+        int nbs = m_currentAlienPerm.size();
 
         //Va chercher la couleur et l'espèce de chaque alien pour ce tour-ci !
         //et met à jour les champs locaux
-        for (vector<Alien*>::iterator it = m_currentAlienPerm.begin(),
-             itE = m_currentAlienPerm.end(); it != itE; ++it)
+        //Utilise une boucle for plutot que des itérateurs pour éviter tout
+        //bug lié à l'invalidation des itérateurs...
+        for (int i=0; i<nbs; ++i)
         {
-            if (!*it) continue;
+            Alien* curAlien = m_currentAlienPerm[i];
+            if (!curAlien) continue;
+
             //trouve la position de l'alien !
-            pair<int,int> pos = m_map[*it];
+            pair<int,int> pos = m_map[curAlien];
             int x = pos.first;
             int y = pos.second;
             //peut arriver si l'alien s'est fait disqualifié !
             if (x<0 || y < 0) continue;
 
             try {
-                Alien::Color col = (*it)->color();
-                (*it)->setCurrentTurnColor(col);
+                Alien::Color col = curAlien->color();
+                curAlien->setCurrentTurnColor(col);
 
-                Alien::Species species = (*it)->species();
-                (*it)->setCurrentTurnSpecies(species);
+                Alien::Species species = curAlien->species();
+                curAlien->setCurrentTurnSpecies(species);
 
                 if (debug)
                 {
                     ostringstream oss;
-                    oss << "Alien " << (*it)->id() << " a choisi l'espèce "
+                    oss << "Alien " << curAlien->id() << " a choisi l'espèce "
                         << Alien::speciesString(species) << " et la couleur "
                         << Alien::colorString(col);
                     m_gui.appendDebug(oss.str());
@@ -155,27 +157,16 @@ void Game::update()
                 }
 
                 //juste pour updater couleur et espece !
-                m_gui.moveAlien(*it, x, y);
-            } catch (RemotelyControledAlienException& e)
+                m_gui.moveAlien(curAlien, x, y);
+            } catch (runtime_error& e)
             {
-                Alien::Species spDisqualified = (*it)->realSpecies();
-                //l'alien a fail ! on élimine l'équipe !!
-                int nbs = m_currentAlienPerm.size();
-                for (int i=0; i<nbs; ++i)
-                {
-                    if (m_currentAlienPerm[i]->realSpecies() == spDisqualified)
-                        m_map.removeAlien(m_currentAlienPerm[i]);
-                }
-
-                stringstream ss;
-                ss << "L'alien d'id " << (*it)->id() << " n'a pas donné "
-                   << "de réponse valide à l'oracle, ou une erreur s'est produite. Son espèce "
-                   << Alien::speciesString(spDisqualified) << " a donc été disqualifiée.";
-                m_gui.speciesDisqualified(ss.str());
-                updateStats();
-                updateGameStatus();
+                disqualify(curAlien);
             }
         }
+
+        //Choisit un ordre d'update des aliens
+        random_shuffle(m_currentAlienPerm.begin(), m_currentAlienPerm.end());
+
         m_tick++;
     }
 
@@ -189,23 +180,9 @@ void Game::update()
             {
                 try {
                     ret = updateAlien(m_currentAlienPerm[m_tick]);
-                } catch (RemotelyControledAlienException& e)
+                } catch (runtime_error& e)
                 {
-                    Alien::Species spDisqualified = m_currentAlienPerm[m_tick]->realSpecies();
-                    //l'alien a fail ! on élimine l'équipe !!
-                    for (int i=0; i<nbs; ++i)
-                    {
-                        if (m_currentAlienPerm[i]->realSpecies() == spDisqualified)
-                            m_map.removeAlien(m_currentAlienPerm[i]);
-                    }
-
-                    stringstream ss;
-                    ss << "L'alien d'id " << m_currentAlienPerm[m_tick]->id() << " n'a pas donné "
-                       << "de réponse valide à l'oracle, ou une erreur s'est produite. Son espèce "
-                       << Alien::speciesString(spDisqualified) << " a donc été disqualifiée.";
-                    m_gui.speciesDisqualified(ss.str());
-                    updateStats();
-                    updateGameStatus();
+                    disqualify(m_currentAlienPerm[m_tick]);
                 }
                 m_tick++;
             }
@@ -231,23 +208,9 @@ void Game::update()
             {
                 try {
                     updateAlien(m_currentAlienPerm[m_tick]);
-                } catch (RemotelyControledAlienException& e)
+                } catch (runtime_error& e)
                 {
-                    Alien::Species spDisqualified = m_currentAlienPerm[m_tick]->realSpecies();
-                    //l'alien a fail ! on élimine l'équipe !!
-                    for (int i=0; i<nbs; ++i)
-                    {
-                        if (m_currentAlienPerm[i]->realSpecies() == spDisqualified)
-                            m_map.removeAlien(m_currentAlienPerm[i]);
-                    }
-
-                    stringstream ss;
-                    ss << "L'alien d'id " << m_currentAlienPerm[m_tick]->id() << " n'a pas donné "
-                       << "de réponse valide à l'oracle, ou une erreur s'est produite. Son espèce "
-                       << Alien::speciesString(spDisqualified) << " a donc été disqualifiée.";
-                    m_gui.speciesDisqualified(ss.str());
-                    updateStats();
-                    updateGameStatus();
+                    disqualify(m_currentAlienPerm[m_tick]);
                 }
                 m_tick++;
             }
@@ -828,4 +791,24 @@ void Game::sendAlienId(int clientId, int alienId)
     stringstream ss;
     ss << "alienId " << alienId;
     m_server->write(clientId, ss.str());
+}
+
+void Game::disqualify(Alien* alien)
+{
+    int nbs = m_currentAlienPerm.size();
+    Alien::Species spDisqualified = alien->realSpecies();
+    //l'alien a fail ! on élimine l'équipe !!
+    for (int i=0; i<nbs; ++i)
+    {
+        if (m_currentAlienPerm[i]->realSpecies() == spDisqualified)
+            m_map.removeAlien(m_currentAlienPerm[i]);
+    }
+
+    stringstream ss;
+    ss << "L'alien d'id " << alien->id() << " n'a pas donné "
+       << "de réponse valide ou dans le temps imparti à l'oracle, ou une erreur s'est produite. Son espèce "
+       << Alien::speciesString(spDisqualified) << " a donc été disqualifiée.";
+    m_gui.speciesDisqualified(ss.str());
+    updateStats();
+    updateGameStatus();
 }

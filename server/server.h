@@ -6,6 +6,13 @@
 #include <QList>
 #include <QTcpServer>
 
+//Exception émise quand le client ne répond pas à temps
+struct ServerTimeoutException : public std::runtime_error
+{
+    ServerTimeoutException(const std::string& what) :
+        runtime_error(what) {}
+};
+
 class Server
 {
 public:
@@ -15,8 +22,8 @@ public:
     virtual bool stop() = 0;
     virtual void waitUntilReady() = 0;
 
-    virtual bool read(int client, std::string& data) = 0;
-    virtual bool write(int client, const std::string& data) = 0;
+    virtual bool read(int client, std::string& data, int timeoutMs=2000) = 0;
+    virtual bool write(int client, const std::string& data, int timeoutMs=2000) = 0;
 };
 
 class TcpServer : public QObject, public Server
@@ -29,8 +36,8 @@ public:
     bool stop();
     void waitUntilReady();
 
-    bool read(int client, std::string& data);
-    bool write(int client, const std::string& data);
+    bool read(int client, std::string& data, int timeoutMs=2000);
+    bool write(int client, const std::string& data, int timeoutMs=2000);
 
 private:
     QTcpServer* m_server;

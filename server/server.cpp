@@ -36,7 +36,7 @@ void TcpServer::waitUntilReady()
    }
 }
 
-bool TcpServer::read(int client, string& data)
+bool TcpServer::read(int client, string& data, int timeout)
 {
     if (client < 0 || client >= m_clients.size())
         return false;
@@ -47,7 +47,9 @@ bool TcpServer::read(int client, string& data)
 
     while (socket->bytesAvailable() < 4)
     {
-        socket->waitForReadyRead(-1);
+        bool ret = socket->waitForReadyRead(timeout);
+        if (!ret)
+            throw ServerTimeoutException("Le client a mis trop de temps à répondre");
         if (socket->state() != QTcpSocket::ConnectedState)
             return false;
     }
@@ -58,7 +60,9 @@ bool TcpServer::read(int client, string& data)
 
     while (socket->bytesAvailable() < size)
     {
-        socket->waitForReadyRead(-1);
+        bool ret = socket->waitForReadyRead(timeout);
+        if (!ret)
+            throw ServerTimeoutException("Le client a mis trop de temps à répondre");
         if (socket->state() != QTcpSocket::ConnectedState)
             return false;
     }
@@ -68,7 +72,7 @@ bool TcpServer::read(int client, string& data)
     return true;
 }
 
-bool TcpServer::write(int client, const string& data)
+bool TcpServer::write(int client, const string& data, int timeout)
 {
     if (client < 0 || client >= m_clients.size())
         return false;
@@ -89,5 +93,9 @@ bool TcpServer::write(int client, const string& data)
     ret = socket->write(array);
     if (ret < 0) return false;
 
-    return socket->waitForBytesWritten(-1);
+    ret = socket->waitForBytesWritten(timeout);
+    if (!ret)
+        throw ServerTimeoutException("Le client a mis trop de temps à répondre");
+
+    return ret;
 }
