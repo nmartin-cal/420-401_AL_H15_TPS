@@ -648,11 +648,16 @@ bool Game::updateAlien(Alien* alien)
     if (otherAlien)
     {
         //un autre alien !
-        if (otherAlien->realSpecies() == alien->realSpecies())
+        if (otherAlien->realSpecies() == alien->realSpecies() &&
+            !alien->hasMated())
         {
             //meme espèce !
-            if (!otherAlien->mating() || otherAlien->hasMated() || otherAlien->hasMated())
+            if (!otherAlien->mating() &&
+                !otherAlien->sleeping() &&
+                !otherAlien->eating() &&
+                !otherAlien->hasMated())
             {
+                //partenaire trouve !
                 if (debug)
                 {
                     ostringstream oss;
@@ -675,7 +680,8 @@ bool Game::updateAlien(Alien* alien)
                 return true;
             } else
             {
-                //déjà pris ! on ne peut pas aller sur la case,
+                //impossible de se reproduire !
+                //on ne peut pas aller sur la case,
                 //le tour est perdu !
                 alien->removeEnergy(Constants::NoMovePenalty);
                 if (debug)
