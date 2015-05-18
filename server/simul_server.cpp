@@ -9,6 +9,14 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
+    QFontDatabase fontDB;
+    int fontId = fontDB.addApplicationFont(":/sprites/font/Symbola.ttf");
+    QStringList fonts = fontDB.applicationFontFamilies(fontId);
+    if (fonts.empty())
+    {
+        cerr << "La police n'a pas été trouvée ..." << endl;
+        return 1;
+    }
 
     Server* s;
     string host("127.0.0.1");

@@ -138,30 +138,38 @@ void Game::update()
             //peut arriver si l'alien s'est fait disqualifié !
             if (x<0 || y < 0) continue;
 
-            try {
-                Alien::Color col = curAlien->color();
-                curAlien->setCurrentTurnColor(col);
-
-                Alien::Species species = curAlien->species();
-                curAlien->setCurrentTurnSpecies(species);
-
-                if (debug)
-                {
-                    ostringstream oss;
-                    oss << "Alien " << curAlien->id() << " a choisi l'espèce "
-                        << Alien::speciesString(species) << " et la couleur "
-                        << Alien::colorString(col);
-                    m_gui.appendDebug(oss.str());
-                    updateStats();
-                    updateGameStatus();
-                }
-
-                //juste pour updater couleur et espece !
-                m_gui.moveAlien(curAlien, x, y);
-            } catch (runtime_error& e)
+            //pas de choix pour les aliens qui dorment !
+            if (!curAlien->sleeping() &&
+                !curAlien->eating() &&
+                !curAlien->mating())
             {
-                disqualify(curAlien);
+
+                try {
+                    Alien::Color col = curAlien->color();
+                    curAlien->setCurrentTurnColor(col);
+
+                    Alien::Species species = curAlien->species();
+                    curAlien->setCurrentTurnSpecies(species);
+
+                    if (debug)
+                    {
+                        ostringstream oss;
+                        oss << "Alien " << curAlien->id() << " a choisi l'espèce "
+                            << Alien::speciesString(species) << " et la couleur "
+                            << Alien::colorString(col);
+                        m_gui.appendDebug(oss.str());
+                        updateStats();
+                        updateGameStatus();
+                    }
+                } catch (runtime_error& e)
+                {
+                    disqualify(curAlien);
+                    continue;
+                }
             }
+
+            //juste pour updater couleur et espece !
+            m_gui.moveAlien(curAlien, x, y);
         }
 
         //Choisit un ordre d'update des aliens

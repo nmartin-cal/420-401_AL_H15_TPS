@@ -126,7 +126,7 @@ class Alien
         virtual void loseSimulation() {}
 
     private:
-        //appelable uniqument par Game !
+        //appelable uniqument par Game et Gui!
         void addEnergy(int delta);
         void removeEnergy(int delta);
         void setEnergy(int energy);
@@ -162,6 +162,7 @@ class Alien
         Color m_currentTurnColor;
 
         friend class Game;
+        friend class Gui;
 };
 
 #endif // ALIEN_H

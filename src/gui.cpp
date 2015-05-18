@@ -102,13 +102,44 @@ void Gui::addFood(int x, int y)
     m_foodsToItems[y*m_width+x] = item;
 }
 
+static const char eatTab[] = {0xf0, 0x9f, 0x8d, 0x95};
+static QString eatString = QString::fromUtf8(eatTab, 4);
+
+static const char sleepTab[] = {0xf0, 0x9f, 0x92, 0xa4};
+static const QString sleepString = QString::fromUtf8(sleepTab, 4);
+
+static const char mateTab[] = {0xe2, 0x99, 0xa1};
+static QString mateString = QString::fromUtf8(mateTab, 3);
+
+static QStringList statusStrings = QStringList() << eatString << sleepString << mateString;
+
 void Gui::addAlien(Alien* alien, int x, int y)
 {
-    QFont font = qApp->font();
-    font.setPixelSize(CellSize-4);
     QIcon icon = m_alienSprites[qMakePair(alien->currentTurnColor(), alien->currentTurnSpecies())];
     QGraphicsItem* item = m_scene->addPixmap(icon.pixmap(CellSize, CellSize));
     item->setPos(x*CellSize, y*CellSize);
+    QFont font = qApp->font();
+    font.setPixelSize(CellSize*0.5);
+    font.setBold(true);
+    //espece
+    QGraphicsItem* text = m_scene->addSimpleText(QString(Alien::speciesString(alien->realSpecies())[0]), font);
+    text->setParentItem(item);
+
+    bool statusTab[] = { alien->eating(), alien->sleeping(), alien->mating() };
+    //statut
+    for (int i=0; i<statusStrings.size(); ++i)
+    {
+        if (statusTab[i])
+        {
+            font = QFont("Symbola");
+            font.setPixelSize(CellSize*0.4);
+            QGraphicsItem* sText = m_scene->addSimpleText(statusStrings[i], font);
+            int posX = CellSize - sText->boundingRect().width();
+            sText->setParentItem(item);
+            sText->setPos(posX, 0);
+        }
+    }
+
     m_aliensToItems[alien] = item;
 }
 

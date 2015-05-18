@@ -50,5 +50,6 @@
         <file>sprites/alien7/gris.png</file>
         <file>sprites/alien7/bleuF.png</file>
         <file>sprites/alien7/bleuC.png</file>
+        <file>sprites/font/Symbola.ttf</file>
     </qresource>
 </RCC>
