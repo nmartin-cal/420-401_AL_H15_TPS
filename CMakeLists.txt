@@ -31,7 +31,8 @@ add_executable(simul_server server/simul_server.cpp
                             src/map.cpp 
                             src/gui.cpp
                             src/constants.cpp 
-                            ${ALIENS_SRCS} 
+                            aliens/alienRemote.cpp
+                            ${ALIENS_SRCS}
                             ${MOCS_SERVER} ${RCS_SERVER})
 target_link_libraries(simul_server ${LIBRARIES})
 

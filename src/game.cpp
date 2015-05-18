@@ -5,6 +5,7 @@
 #include "src/constants.h"
 #include "server/server.h"
 #include "aliens/aliens.h"
+#include "aliens/alienRemote.h"
 
 #include <iostream>
 
