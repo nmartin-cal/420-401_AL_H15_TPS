@@ -417,34 +417,40 @@ bool Game::updateAlien(Alien* alien)
             alien->wakeup();
 
             //il faut faire apparaître un bébé !!
-            // 0 bébé 20/100 = 2*10/100
-            // 1 bébé 78/100 = 2*39/100
-            // 2 bébés 2/100 = 2*1/100
-            int r = random()%100;
-            if (r < 10)
+            if (random()%2 == 0)
             {
-                //0 bébé : pas de chances !
-                if (debug)
+                // 0 bébé 5%
+                // 1 bébé 85%
+                // 2 bébés 10%
+                int r = random()%100;
+                if (r < 5)
                 {
-                    ostringstream oss;
-                    oss << "Malheuresement, aucun bébé n'a été créé!";
-                    m_gui.appendDebug(oss.str());
-                }
-            } else if (r < 49)
-            {
-                //1 bébé au hasard !
-                if (m_map.full())
-                    throw GameException("La carte est pleine!");
-                pair<int, int> p = m_map.randomEmptySpot();
-                m_map.addAlien(alien->clone(), p.first, p.second);
-                if (debug)
+                    //0 bébé : pas de chances !
+                    if (debug)
+                    {
+                        ostringstream oss;
+                        oss << "Malheuresement, aucun bébé n'a été créé!";
+                        m_gui.appendDebug(oss.str());
+                    }
+                } else if (r < 5+85)
                 {
-                    ostringstream oss;
-                    oss << "Un bébé n'a été créé à la case (" << p.first
-                        << "," << p.second << ")";
-                    m_gui.appendDebug(oss.str());
+                    //1 bébé au hasard !
+                    if (m_map.full())
+                        throw GameException("La carte est pleine!");
+                    pair<int, int> p = m_map.randomEmptySpot();
+                    m_map.addAlien(alien->clone(), p.first, p.second);
+                    if (debug)
+                    {
+                        ostringstream oss;
+                        oss << "Un bébé n'a été créé à la case (" << p.first
+                            << "," << p.second << ")";
+                        m_gui.appendDebug(oss.str());
+                    }
                 }
-            } else if (r < 50)
+                //else : on applique les probabilités sur le conjoint
+                //de temps en temps ça pourra générer 4 bébés ... mais en moyenne
+                //cela fera exactement ce que l'on veut !
+            } else
             {
                 //2 bébés au hasard !
                 for (int k=0; k<2; ++k)
