@@ -8,5 +8,6 @@
 #include "alienOg.h"
 #include "alienUqomua.h"
 #include "alienEpoe.h"
+#include "alienSmart.h"
 
 #endif // ALIENS_H

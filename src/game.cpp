@@ -78,6 +78,21 @@ Game::Game(Server* server, int width, int height, int numOfEachSpecies, bool loc
                 sendAlienId(k, alien->id());
             }
         }
+    } else {
+        //instancie uniquement des Grutub en local, les Owa ne sont pas là :)
+        for (int j=0; j<m_numOfEachSpecies; ++j, ++i)
+        {
+            //TODO! Décommenter les lignes suivantes quand votre SmartAlien
+            //sera implémenté pour que le simulateur instancie votre espèce
+            //en mode local!
+
+            /*
+            //on fixe les ids des aliens intelligents à 200, 201, 202...
+            //ca n'a pas d'importance en local de toutes façons
+            Alien* alien = new SmartAlien(200+j);
+            m_map.addAlien(alien, pos[i]%width, pos[i]/width);
+            */
+        }
     }
 
     //Placement de la bouffe !
