@@ -3,7 +3,7 @@
 const int Constants::NumSpecies = 6;
 const int Constants::NumPlayers = 2;
 const int Constants::PercentageOfFood = 5;
-const int Constants::FoodRespawnTurns = 50;
+const int Constants::FoodRespawnTurns = 5;
 const int Constants::SleepingTurnsIfTired = 6;
 const int Constants::SleepingTurnsIfMating = 4;
 const int Constants::SleepingTurnsIfEating = 2;
