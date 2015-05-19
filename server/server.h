@@ -2,6 +2,7 @@
 #define SERVER_H
 
 #include <string>
+#include <stdexcept>
 #include <QObject>
 #include <QList>
 #include <QTcpServer>
