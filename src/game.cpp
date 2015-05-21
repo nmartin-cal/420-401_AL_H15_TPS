@@ -261,7 +261,7 @@ void Game::update()
 
 bool Game::simulationOver()
 {
-    return m_simulationOver;
+    return !m_gui.isVisible() || m_simulationOver;
 }
 
 void Game::updateStats()
@@ -560,7 +560,7 @@ bool Game::updateAlien(Alien* alien)
         {
             ostringstream oss;
             oss << "Voit de la nourriture "
-                << " à la position (" << pos.first << "," << pos.second << ")";
+                << " à la position (" << food.first << "," << food.second << ")";
             m_gui.appendDebug(oss.str());
         }
     }

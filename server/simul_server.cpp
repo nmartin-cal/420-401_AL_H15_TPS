@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
+
     QFontDatabase fontDB;
     int fontId = fontDB.addApplicationFont(":/sprites/font/Symbola.ttf");
     QStringList fonts = fontDB.applicationFontFamilies(fontId);
@@ -43,6 +44,9 @@ int main(int argc, char *argv[])
         game.update();
 
     s->stop();
+
+    delete s;
+    fontDB.removeAllApplicationFonts();
 
     return 0;
 }

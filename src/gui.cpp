@@ -21,7 +21,7 @@ Gui::Gui(int width, int height) :
     CellSize = qMin(static_cast<int>(cellHeight), 32);
 
     QHBoxLayout* hLay = new QHBoxLayout;
-    m_scene = new QGraphicsScene;
+    m_scene = new QGraphicsScene(this);
     m_scene->setSceneRect(0, 0, width*CellSize, height*CellSize);
     m_scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     m_view = new QGraphicsView;

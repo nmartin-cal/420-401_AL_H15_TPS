@@ -1,0 +1,43 @@
+{
+    ignore_unversioned_libs_leaks
+    Memcheck:Leak
+    obj:*/lib*/lib*.so
+    ...
+    obj:*/lib*/lib*.so
+}
+{
+    ignore_versioned_libs_leaks
+    Memcheck:Leak
+    obj:*/lib*/lib*.so.*
+    ...
+    obj:*/lib*/lib*.so.*
+}
+{
+    ignore_unversioned_libs_cond
+    Memcheck:Cond
+    obj:*/lib*/lib*.so
+    ...
+    obj:*/lib*/lib*.so
+}
+{
+    ignore_versioned_libs_cond
+    Memcheck:Cond
+    obj:*/lib*/lib*.so.*
+    ...
+    obj:*/lib*/lib*.so.*
+}
+{
+    ignore_valgrind_malloc
+    Memcheck:Leak
+    fun:malloc
+}
+{
+    ignore_valgrind_calloc
+    Memcheck:Leak
+    fun:calloc
+}
+{
+    ignore_valgrind_realloc
+    Memcheck:Leak
+    fun:realloc
+}
