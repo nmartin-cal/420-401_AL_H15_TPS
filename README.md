@@ -10,7 +10,7 @@ Puisque le travail utilise la librairie Qt, plusieurs erreurs seront détectées
 
 	valgrind ./simul_server -l
 
-À la place, utilisez le fichier de suppression fourni qui n'affichera que les erreurs de votre code source, avec la commande suivante dans le répertoire `build` :
+À la place, utilisez le fichier de suppression fourni qui n'affichera que les erreurs de votre code source et ignorera les erreurs liées à Qt, avec la commande suivante dans le répertoire `build` :
 
-	 valgrind --suppressions=valgrind.supp --leak-check=full ./simul_server -l
+	 valgrind --suppressions=../valgrind.supp --leak-check=full ./simul_server -l
 
