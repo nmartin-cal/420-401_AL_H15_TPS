@@ -1,6 +1,6 @@
-# 420-401_AL_H15_TPS
+# Code source du TP synthèse du cours 420-401-AL (session H15)
 
-Version officielle du TP synthèse.
+## Énoncé
 
 L'énoncé se trouve sur Moodle.
 
