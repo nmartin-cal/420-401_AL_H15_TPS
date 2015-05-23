@@ -641,14 +641,14 @@ bool Game::updateAlien(Alien* alien)
     if (otherAlien)
     {
         //un autre alien !
-        if (otherAlien->realSpecies() == alien->realSpecies() &&
-            !alien->hasMated())
+        if (otherAlien->realSpecies() == alien->realSpecies())
         {
             //meme espèce !
-            if (!otherAlien->mating() &&
+            if (!alien->hasMated() &&
+                !otherAlien->hasMated() &&
+                !otherAlien->mating() &&
                 !otherAlien->sleeping() &&
-                !otherAlien->eating() &&
-                !otherAlien->hasMated())
+                !otherAlien->eating())
             {
                 //partenaire trouve !
                 if (debug)
