@@ -51,11 +51,11 @@ const string& Alien::attackString(Alien::Attack attack)
     {
         "Plasma", "Acide", "Spore"
     };
-    static string empty = "";
+    static string forfeit = "Forfait";
 
     if (attack >= Plasma && attack <= Fungus)
         return attackStr[attack];
-    return empty;
+    return forfeit;
 }
 
 int Alien::m_ids = 0;

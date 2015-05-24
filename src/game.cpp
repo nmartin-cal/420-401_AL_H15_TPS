@@ -1,4 +1,3 @@
-#include <QtGui>
 #include <algorithm>
 #include <sstream>
 #include "src/game.h"
@@ -198,7 +197,7 @@ void Game::update()
         int nbs = m_currentAlienPerm.size();
         if (type == Gui::TICK)
         {
-            bool ret = true;
+            bool ret = false;
             while (!ret && m_tick < nbs)
             {
                 try {
@@ -724,6 +723,13 @@ bool Game::updateAlien(Alien* alien)
                                                 otherAlien->m_currentTurnSpecies);
                 Alien::Attack a2 = otherAlien->fight(alien->m_currentTurnColor,
                                                      alien->m_currentTurnSpecies);
+                char table[] = " 011 001 ";
+                bool win1;
+                if (a1 == a2) win1 = random() % 2;
+                else if (a1 == Alien::Forfeit) win1 = false;
+                else if (a2 == Alien::Forfeit) win1 = true;
+                else win1 = static_cast<bool>(table[a2*3+a1]-'0');
+
                 if (debug)
                 {
                     ostringstream oss;
@@ -731,12 +737,6 @@ bool Game::updateAlien(Alien* alien)
                         << " et alien #2 choisit " << Alien::attackString(a2);
                     m_gui.appendDebug(oss.str());
                 }
-                char table[] = " 011 001 ";
-                bool win1;
-                if (a1 == a2) win1 = random() % 2;
-                else if (a1 == Alien::Forfeit) win1 = false;
-                else if (a2 == Alien::Forfeit) win1 = true;
-                else win1 = static_cast<bool>(table[a2*3+a1]);
 
                 if (win1)
                 {
@@ -765,7 +765,6 @@ bool Game::updateAlien(Alien* alien)
                 }
             }
             //un des deux et enlevé du monde
-
         }
     }
 
