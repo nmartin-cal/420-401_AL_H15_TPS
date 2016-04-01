@@ -58,7 +58,7 @@ Alien::Attack RemotelyControledAlien::fight(Alien::Color alienColor, Alien::Spec
     stringstream ss;
     ss << alienColor << " " << alienSpecies;
     int a = sendAndReceiveCommand("fight", ss.str());
-    if (a < Alien::Plasma || a > Alien::Fungus)
+    if (a < Alien::Plasma || a > Alien::Forfeit)
         throw RemotelyControledAlienException("Erreur d'attaque envoyée par le client dans la réponse.");
     return static_cast<Alien::Attack>(a);
 }
